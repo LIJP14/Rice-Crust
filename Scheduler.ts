@@ -21,10 +21,14 @@ class Scheduler {
             this.add(this.tasks.shift());
         }
     }
-
 }
 
-const scheduler = new Scheduler()
+
+
+
+
+
+const scheduler = new Scheduler();
 
 const timeout = (time): Promise<void> => {
     // @ts-ignore
