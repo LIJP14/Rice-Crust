@@ -9,7 +9,9 @@ function isPackageChange () {
 		if [[ ! -d "node_modules" ]]; then
 			npm install
 		fi
-	else 
+    
+	else
+  
 		# 判断 package.json 文件有无改变
 		md5_old=`cat package.md5`
 		md5_new=`md5sum package.json |awk '{print $1}'`
