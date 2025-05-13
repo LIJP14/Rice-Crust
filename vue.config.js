@@ -1,5 +1,9 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
 const path = require("path");
+
+// 混淆打包
+const WebpackObfuscator = require("webpack-obfuscator");
+
 module.exports = defineConfig({
     transpileDependencies: true,
     publicPath: '/public/xx',
@@ -35,7 +39,10 @@ module.exports = defineConfig({
                     ]
                 }
             ]
-        }
+        },
+
+        // 混淆打包
+        plugins: process.env.NODE_ENV === 'production' ? [ new WebpackObfuscator() ] : []
     },
     chainWebpack: config => {
         config.module
@@ -73,6 +80,21 @@ module.exports = defineConfig({
             .end();
 
 
+        // // 删除版本号，在 chainWebpack 中的配置，
+        // // 在这里设置，替换的不全，会漏掉部分版本号
+        // // 在 configureWebpack 中配置的，替换的全
+        // config.module
+        //     .rule('js')
+        //     .use('string-replace-loader')
+        //     .loader('string-replace-loader')
+        //     .tap(options => {
+        //         return {
+        //             search: /(version\s*[:=])\s*["'][^"']+["']/g, // 正则表达式匹配version=
+        //             replace: '$1""', // 将其替换为空，即删除
+        //             flags: 'g' // 全局匹配
+        //         };
+        //     })
+        //     .end();
 
 
     }
