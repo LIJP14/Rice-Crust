@@ -9,6 +9,33 @@ module.exports = defineConfig({
                 '@img': path.join(__dirname, 'src/assets/img'),
             }
         },
+
+        module: {
+            // 打包，删除版本号
+            rules: [
+                {
+                    test: /\.js$/,
+                    use: [
+                        {
+                            loader: 'string-replace-loader',
+                            options: {
+                                search: /(version\s*[:=])\s*["'][^"']+["']/g, // 正则表达式匹配: version = "1.2.10" 或 version: "1.2.10"
+                                replace: '$1""', // 版本号替换为空
+                                flags: 'g' // 全局匹配
+                            }
+                        },
+                        {
+                            loader: 'string-replace-loader',
+                            options: {
+                                search: /(v\d+\.\d+(\.\d+))/g, // 正则表达式匹配: "v1.2.34"
+                                replace: '', // 将其替换为空，即删除
+                                flags: 'g' // 全局匹配
+                            }
+                        },
+                    ]
+                }
+            ]
+        }
     },
     chainWebpack: config => {
         config.module
@@ -44,6 +71,8 @@ module.exports = defineConfig({
                 esModule: false,
             })
             .end();
+
+
 
 
     }
